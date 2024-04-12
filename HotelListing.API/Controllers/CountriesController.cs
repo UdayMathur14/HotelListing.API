@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using HotelListing.API.Contracts;
 using HotelListing.API.Data;
 using HotelListing.API.Models.Country;
-using AutoMapper;
-using Microsoft.AspNetCore.Http.HttpResults;
-using HotelListing.API.Contracts;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HotelListing.API.Controllers
 {
@@ -21,7 +15,7 @@ namespace HotelListing.API.Controllers
         private readonly ICountriesRepository countriesRepository;
         private readonly IMapper mapper;
 
-        public CountriesController(ICountriesRepository countriesRepository , IMapper mapper)
+        public CountriesController(ICountriesRepository countriesRepository, IMapper mapper)
         {
             this.countriesRepository = countriesRepository;
             this.mapper = mapper;
@@ -31,12 +25,12 @@ namespace HotelListing.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GetCountryDto>>> GetCountries()
         {
-          //if (_context.Countries == null)
-          //{
-          //    return NotFound();
-          //}
-          var countries = await countriesRepository.GetAllAsync();  
-          var records = mapper.Map<List<GetCountryDto>>(countries);   
+            //if (_context.Countries == null)
+            //{
+            //    return NotFound();
+            //}
+            var countries = await countriesRepository.GetAllAsync();
+            var records = mapper.Map<List<GetCountryDto>>(countries);
             return Ok(records);
         }
 
@@ -44,7 +38,7 @@ namespace HotelListing.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CountryDto>> GetCountry(int id)
         {
-      
+
             var country = await countriesRepository.GetDetails(id);
 
             if (country == null)
@@ -137,7 +131,7 @@ namespace HotelListing.API.Controllers
 
         // DELETE: api/Countries/5
         [HttpDelete("{id}")]
-        [Authorize(Roles ="Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteCountry(int id)
         {
             //with the help of repositary or abstraction 
